@@ -82,12 +82,22 @@ int divide(int a, int b) {
     return res;
 }
 
+/*
+
+取余运算：
+
+*/
+int mod(int a, int b) {
+    return sub(a, mul_v2(divide(a, b), b));
+}
+
 int main() {
-    int a = 90, b = 5;
+    int a = 90, b = 11;
     cout << add(a, b) << endl;
     cout << sub(a, b) << endl;
     cout << mul_v1(a, b) << endl;
     cout << mul_v2(a, b) << endl;
     cout << divide(a, b) << endl;
+    cout << mod(a, b) << endl;
     return 0;
 }
