@@ -1,4 +1,5 @@
 #include <iostream>
+#include <climits>
 using namespace std;
 
 /*
@@ -67,19 +68,27 @@ int mul_v2(int a, int b) {
 
 */
 int divide(int a, int b) {
-    int res = 0;
-    int a1 = a < 0 ? add(~a, 1) : a;
-    int b1 = b < 0 ? add(~b, 1) : b;
+    if (b == 0) {
+        throw invalid_argument("Division by zero");
+    }
+
+    if (a == INT_MIN && b == -1) {
+        return INT_MAX; // Handle overflow
+    }
+
+    bool negative = (a < 0) ^ (b < 0);
+    unsigned int a1 = a < 0 ? static_cast<unsigned int>(-(a + 1)) + 1 : static_cast<unsigned int>(a);
+    unsigned int b1 = b < 0 ? static_cast<unsigned int>(-(b + 1)) + 1 : static_cast<unsigned int>(b);
+    unsigned int res = 0;
+
     for (int i = 31; i >= 0; i--) {
         if ((a1 >> i) >= b1) {
-            res = add(res, 1 << i);
-            a1 = sub(a1, b1 << i);
+            res += 1U << i;
+            a1 -= b1 << i;
         }
     }
-    if ((a ^ b) < 0) {
-        res = add(~res, 1);
-    }
-    return res;
+
+    return negative ? -static_cast<int>(res) : static_cast<int>(res);
 }
 
 /*
@@ -92,12 +101,13 @@ int mod(int a, int b) {
 }
 
 int main() {
-    int a = 90, b = 11;
+    int a = INT_MIN, b = 1;
     cout << add(a, b) << endl;
     cout << sub(a, b) << endl;
     cout << mul_v1(a, b) << endl;
     cout << mul_v2(a, b) << endl;
-    cout << divide(a, b) << endl;
+    cout << "divide(a, b) = " << divide(a, b) << endl;
     cout << mod(a, b) << endl;
+    cout << "a / b = " << (a / b) << endl;
     return 0;
 }
