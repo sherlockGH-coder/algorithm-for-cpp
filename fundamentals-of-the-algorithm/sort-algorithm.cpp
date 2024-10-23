@@ -9,6 +9,12 @@
     a = b; b = c; \
 }
 
+__attribute__((constructor))
+void __init_Rand__() {
+    printf("init rand\n");
+    srand(time(0));
+}
+
 std::vector<int> getRandomData(int n) {
     std::vector<int> num;
     for (int i = 0; i < n; i++) {
