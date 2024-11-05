@@ -28,7 +28,7 @@ int binary_search_v1(vector<int> &arr, int target) {
 
 // 10模型二分
 int binary_search_v2(vector<int> &arr, int target) {
-    int head = 0, tail = arr.size() - 1;
+    int head = -1, tail = arr.size() - 1;
     while (head < tail) {
         int mid = (head + tail + 1) >> 1;
         if (arr[mid] == target) return mid;
